@@ -1,0 +1,18 @@
+
+{
+   "compileOnSave": true,
+   "compilerOptions": {
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "pretty": true,
+      "target": "es6",
+      "outDir": "./dist",
+      "watch": true
+   },
+   "include": [
+      "./src/**/*.ts"
+   ],
+   "exclude": [
+      "node_modules"
+   ]
+ }
