@@ -1,4 +1,5 @@
 import {Application, Request, Response } from 'express';
+import RegisterRoute from './RegisterRoute';
 import UserRoute from './UserRoute';
 
 
@@ -16,6 +17,10 @@ export default class Router{
         // User Route
         let user_route = new UserRoute('/user');
         user_route.route(this.app);
+        
+        //Register Route
+        let register_route = new RegisterRoute('/register');
+        register_route.route(this.app);
     }
     
 }
