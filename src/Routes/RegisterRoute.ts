@@ -15,6 +15,11 @@ export default class RegisterRoute extends Route<RegisterController>{
             this.controller.create(req,res);
         });
 
+        //range on query
+        app.get(this.path+"/range", (req : Request, res : Response) => {
+            this.controller.getRange(req, res);
+        })
+
         app.get(this.path+"/:user_id", (req : Request, res : Response) => {
             this.controller.get(req,res);
         });
@@ -22,6 +27,8 @@ export default class RegisterRoute extends Route<RegisterController>{
         app.get(this.path, (req : Request, res : Response) => {
             this.controller.getAll(req, res);
         })
+
+        //update and delete not necessary for now
 
     }
 
