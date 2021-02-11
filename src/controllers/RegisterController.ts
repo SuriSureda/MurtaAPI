@@ -28,9 +28,10 @@ export default class RegisterController extends Controller<RegisterService> impl
                 }
             })
         }else{
-            CustomResponse.badRequest(res);
+            CustomResponse.badRequest("Insufficient parameters",res);
         }
     }
+
     // gets all registers with same user id
     get(req : Request, res: Response): void {
         if(req.params.user_id && isValidObjectId(req.params.user_id)){
@@ -38,24 +39,55 @@ export default class RegisterController extends Controller<RegisterService> impl
                 if(err){
                     CustomResponse.mongoError(err, res);
                 }else{
-                    CustomResponse.successResponse("registers by user detected",registers,res);
+                    CustomResponse.successResponse("registers by user found",registers,res);
                 }
             })
         }else{
-            CustomResponse.badRequest(res);
+            CustomResponse.badRequest("Id not valid or missing",res);
         }
     }
 
+    getRange(req : Request, res : Response) : void{
+        let first_query = req.query.first;
+        let last_query = req.query.last;
+        if(first_query && last_query){
+            let first = parseInt(first_query as any);
+            let last = parseInt(last_query as any);
+            if(first >=last){
+                CustomResponse.badRequest("Query params : last must be greater than first",res);
+            }else{
+                
+                this.service.getRange(first,last,(err : any, registers : IRegister[]) => {
+                    if(err){
+                        CustomResponse.mongoError(err, res);
+                    }else{
+                        CustomResponse.successResponse("registers in range found",registers,res);
+                    }
+                })
+            }
+        }else{
+            CustomResponse.badRequest("Query params : first or last are missing",res);
+        }
+    }
+
+
+    //gets all registers
     getAll(req : Request, res: Response): void {
-       
+        this.service.getAll((err : any, registers : IRegister[]) => {
+            if(err){
+                CustomResponse.mongoError(err, res);
+            }else{
+                CustomResponse.successResponse("registers by user detected",registers,res);
+            }
+        })
     }
 
     update(req: Request, res: Response): void {
-       
+       throw new Error("not implemented");
     }
 
     delete(req: Request, res: Response): void {
-
+        throw new Error("not implemented");
     }
 
     remove(req : Request, res : Response) : void {
