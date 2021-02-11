@@ -19,7 +19,7 @@ export default class UserService implements IService{
     }
 
     getAll(callback : any){
-        User.find(callback);
+        User.find({deleted : false},callback);
     }
 
     update(params: IUser, callback: any) {
