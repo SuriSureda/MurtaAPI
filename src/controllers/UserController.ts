@@ -33,7 +33,7 @@ export default class UserController extends Controller<UserService> implements I
             });
 
         }else{
-            CustomResponse.badRequest(res)
+            CustomResponse.badRequest("Insufficient parameters",res)
         }
     }
 
@@ -47,7 +47,7 @@ export default class UserController extends Controller<UserService> implements I
                 }
             })
         }else{
-            CustomResponse.badRequest(res);
+            CustomResponse.badRequest("Id param is not valid or missing",res);
         }
     }
 
@@ -88,7 +88,7 @@ export default class UserController extends Controller<UserService> implements I
                 }
             })
         }else{
-            CustomResponse.badRequest(res);
+            CustomResponse.badRequest("Insufficient parameters",res);
         }
     }
 
@@ -114,7 +114,7 @@ export default class UserController extends Controller<UserService> implements I
                                 CustomResponse.mongoError(err, res);
                             }else{
                                 delete user_to_delete.password;
-                                CustomResponse.successResponse('user updated',user_to_delete,res);
+                                CustomResponse.successResponse('user deleted',user_to_delete,res);
                             }
                         })
                     }else{
