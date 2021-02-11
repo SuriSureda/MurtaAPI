@@ -17,10 +17,10 @@ export default class Custom_Response{
         });
     }
 
-    static badRequest(res : Response){
+    static badRequest(message : string,res : Response){
         res.status(400).json({
             STATUS: 'FAILURE',
-            MESSAGE : 'Insufficient parameters'
+            MESSAGE : message
         });
     }
 
