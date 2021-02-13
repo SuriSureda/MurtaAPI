@@ -12,7 +12,11 @@ const RegisterSchema  = new Schema({
         type : Schema.Types.ObjectId,
         required : [true, "User is required"]
     },
-    deleted : Boolean
+    deleted : {
+        type : Boolean,
+        default : false,
+        select : false
+    }
 })
 
 export default mongoose.model('Register', RegisterSchema);

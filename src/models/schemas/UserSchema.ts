@@ -24,7 +24,11 @@ const UserSchema  = new Schema({
         validate : [PasswordValidator.isPassword, "Password must have at least 8 characters"],
         select : false
     },
-    deleted : Boolean
+    deleted : {
+        type : Boolean,
+        default : false,
+        select : false
+    }
 })
 
 export default mongoose.model('User', UserSchema);
