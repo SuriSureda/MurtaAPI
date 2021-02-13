@@ -1,6 +1,6 @@
 import {Application, Request, Response } from 'express';
 
-export default class Custom_Response{
+export default class CustomResponse{
     static successResponse(message : string, DATA : any, res : Response){
         res.status(200).json({
             STATUS: 'SUCCESS',
