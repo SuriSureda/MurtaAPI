@@ -2,6 +2,7 @@ import {Application, Request, Response } from 'express';
 import { isValidObjectId } from 'mongoose';
 import Auth from '../Auth';
 import CustomResponse from '../CustomResponse'
+import ICreatedUser from '../models/ICreatedUser';
 import IUser from '../models/IUser';
 import UserService from '../services/UserService';
 import Controller from "./Controller";
@@ -28,7 +29,12 @@ export default class UserController extends Controller<UserService> implements I
                 if(err){
                     CustomResponse.mongoError(err,res)
                 }else{
-                    CustomResponse.successResponse('user created',user_data,res);
+                    let created_user : ICreatedUser = {
+                        _id : user_data._id,
+                        user_name : user_data.user_name,
+                        email : user_data.email
+                    }
+                    CustomResponse.successResponse('user created',created_user,res);
                 }
             });
 
@@ -103,10 +109,10 @@ export default class UserController extends Controller<UserService> implements I
                     if(user_data){
                         let user_to_delete : IUser = {
                             _id : user_data._id,
+                            deleted : true,
                             user_name : user_data.user_name,
                             email : user_data.email,
-                            password : user_data.password,
-                            deleted : true
+                            password : user_data.password
                         }
                         this.service.update(user_to_delete, (err : any, user_deleted : IUser) => {
                             //to not wait for response update user and avoid password return 
@@ -118,7 +124,7 @@ export default class UserController extends Controller<UserService> implements I
                             }
                         })
                     }else{
-                        CustomResponse.failureResponse("user not exists",null,res);
+                        CustomResponse.failureResponse("user not exists or is deleted",null,res);
                     }
                 }
             })
