@@ -1,4 +1,5 @@
 import {Application, Request, Response } from 'express';
+import CommonRoute from './CommonRoute';
 import RegisterRoute from './RegisterRoute';
 import UserRoute from './UserRoute';
 
@@ -21,6 +22,10 @@ export default class Router{
         //Register Route
         let register_route = new RegisterRoute('/register');
         register_route.route(this.app);
+
+        //COMMON ROUTES (LAST !!!)
+        let common_route = new CommonRoute();
+        common_route.route(this.app);
     }
     
 }
