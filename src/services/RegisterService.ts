@@ -18,7 +18,7 @@ export default class RegisterService implements IService{
     }
 
     getRange(first : number, last : number, callback : any){
-        Register.find({delete : false}).sort({'date' : -1}).skip(first).limit(last-first).then(callback);
+        Register.find({deleted : false},callback).sort({'date' : -1}).skip(first).limit(last-first);
     }
 
     getAll(callback : any){
