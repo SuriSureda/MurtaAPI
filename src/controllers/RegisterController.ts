@@ -2,6 +2,7 @@ import {Application, Request, Response } from 'express';
 import { isValidObjectId } from 'mongoose';
 import Auth from '../Auth';
 import CustomResponse from '../CustomResponse'
+import ICreatedRegister from '../models/ICreatedRegister';
 import IRegister from '../models/IRegister';
 import RegisterService from '../services/RegisterService';
 import Controller from "./Controller";
@@ -24,7 +25,12 @@ export default class RegisterController extends Controller<RegisterService> impl
                 if(err){
                     CustomResponse.mongoError(err, res);
                 }else{
-                    CustomResponse.successResponse("register created",register_data, res);
+                    let createdRegister : ICreatedRegister = {
+                        _id : register_data._id,
+                        user : register_data.user,
+                        date : register_data.date
+                    }
+                    CustomResponse.successResponse("register created",createdRegister, res);
                 }
             })
         }else{
@@ -47,6 +53,7 @@ export default class RegisterController extends Controller<RegisterService> impl
         }
     }
 
+    //gets an amount of 
     getRange(req : Request, res : Response) : void{
         let first_query = req.query.first;
         let last_query = req.query.last;
@@ -77,7 +84,7 @@ export default class RegisterController extends Controller<RegisterService> impl
             if(err){
                 CustomResponse.mongoError(err, res);
             }else{
-                CustomResponse.successResponse("registers by user detected",registers,res);
+                CustomResponse.successResponse("all registers",registers,res);
             }
         })
     }
