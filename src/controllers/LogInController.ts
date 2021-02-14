@@ -48,10 +48,14 @@ export default class LogInController extends Controller<UserService>{
                             email : user_data.email
                         }
 
-                        let token : string = Auth.getJWT(payload)
-
-                        CustomResponse.successResponse("Logged In", {token : token}, res);
-                        return;
+                        Auth.getJWT(payload, (err, token) => {
+                            if(err){
+                                CustomResponse.mongoError(err, res);
+                            }else{
+                                CustomResponse.successResponse("logged in",{token : token}, res);
+                            }
+                        });
+                        return; 
                     }
                 }
                 // If not user found or wrong password
