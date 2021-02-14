@@ -3,6 +3,7 @@ import { isValidObjectId } from 'mongoose';
 import Auth from '../Auth';
 import CustomResponse from '../CustomResponse'
 import ICreatedRegister from '../models/ICreatedRegister';
+import IRangeRegister from '../models/IRangeRegister';
 import IRegister from '../models/IRegister';
 import RegisterService from '../services/RegisterService';
 import Controller from "./Controller";
@@ -59,15 +60,25 @@ export default class RegisterController extends Controller<RegisterService>{
         if(first_query && last_query){
             let first = parseInt(first_query as any);
             let last = parseInt(last_query as any);
-            if(first >=last){
+            if(first > last){
                 CustomResponse.badRequest("Query params : last must be greater than first",res);
             }else{
-                
-                this.service.getRange(first,last,(err : any, registers : IRegister[]) => {
+                this.service.getRange(first,last-first+1,(err : any, registers : IRegister[]) => {
                     if(err){
                         CustomResponse.mongoError(err, res);
                     }else{
-                        CustomResponse.successResponse("registers in range found",registers,res);
+                        this.service.getNumberRegisters((err : any, total : number) => {
+                            if(err){
+                                CustomResponse.mongoError(err, res);
+                            }else{
+                                let remaining = (total - 1) - last > 0;
+                                let response : IRangeRegister = {
+                                    remaining : remaining,
+                                    registers : registers
+                                }
+                                CustomResponse.successResponse("registers in range found", response, res);
+                            }
+                        })
                     }
                 })
             }
