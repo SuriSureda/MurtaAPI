@@ -1,6 +1,7 @@
 import RegisterController from '../controllers/RegisterController';
 import {Application, Request, Response } from 'express';
-import Route from './Route'
+import Auth from '../Auth';
+import Route from './Route';
 
 export default class RegisterRoute extends Route<RegisterController>{
 
@@ -10,6 +11,8 @@ export default class RegisterRoute extends Route<RegisterController>{
     }
 
     route(app : Application){
+
+        app.use(Auth.verifyJWT);
         
         app.post(this.path, (req : Request, res : Response) => {
             this.controller.create(req,res);
