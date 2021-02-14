@@ -9,6 +9,10 @@ export default class RegisterService implements IService{
         _session.save(callback);
     }
 
+    getNumberRegisters( callback : any) {
+        Register.countDocuments(callback);
+    }
+
     get(id: string, callback: any) {
         Register.findById(id, {deleted : false},callback);
     }
@@ -17,12 +21,14 @@ export default class RegisterService implements IService{
         Register.find({user : user_id, deleted : false},callback);
     }
 
-    getRange(first : number, last : number, callback : any){
-        Register.find({deleted : false},callback).sort({'date' : -1}).skip(first).limit(last-first);
+    // With populated user ( only username )
+    getRange(first : number, limit : number, callback : any){
+        Register.find({deleted : false},callback).sort({'date' : -1}).skip(first).limit(limit).populate('user', 'user_name');
     }
 
+    // With populated user ( only username )
     getAll(callback : any){
-        Register.find(callback);
+        Register.find(callback).populate('user', 'user_name');
     }
 
     update(params: IRegister, callback: any) {
