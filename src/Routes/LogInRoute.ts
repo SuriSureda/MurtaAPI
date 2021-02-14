@@ -1,13 +1,13 @@
 import { Application , Request, Response} from "express";
-import AuthController from "../controllers/AuthController";
+import LogInController from "../controllers/LogInController";
+import AuthController from "../controllers/LogInController";
+import Route from "./Route";
 
-export default class LogInRoute{
-    private controller : AuthController;
-    private path : string;
+export default class LogInRoute extends Route<LogInController>{
 
     constructor(path : string){
-        this.path = path;
-        this.controller = new AuthController();
+        let logInController = new LogInController();
+        super(path,logInController);
     }
     
     route (app : Application) : void{
