@@ -1,6 +1,8 @@
 import IAuthUser from './models/IAuthUser';
 import {sign, verify} from 'jsonwebtoken';
 import {compareSync, hashSync} from 'bcryptjs';
+import { NextFunction, Request, Response } from 'express';
+import CustomResponse from './CustomResponse';
 export default class Auth{
 
 
@@ -18,7 +20,20 @@ export default class Auth{
         sign(payload, process.env.JWT_SECRET_KEY, {expiresIn : "1d"}, callback);
     }
 
-    static verifyJWT(token : string, callback : any){
-        verify(token, process.env.JWT_SECRET_KEY, callback);
+
+    //Ass Middleware
+    static verifyJWT(req : Request, res : Response, next : NextFunction){
+
+        if(req.headers.authorization){
+            verify(req.headers.authorization, process.env.JWT_SECRET_KEY, (err : any, token : object) => {
+                if(err){
+                    CustomResponse.forbiddenResponse(res);
+                }else{
+                    next();
+                }
+            });
+        }else{
+            CustomResponse.unauthResponse(res);
+        }
     }
 }
