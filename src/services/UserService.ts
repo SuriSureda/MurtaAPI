@@ -13,6 +13,10 @@ export default class UserService implements IService{
         User.findById(id, {deleted : false},callback);
     }
 
+    getSignIn(email : string, callback : any){
+        User.findOne({ email : email, deleted : false}, callback).select("+password");
+    }
+
     // gets users with password
     getWPassword(id: string, callback: any) {
         User.findById(id,{deleted : false},callback).select("+password");
