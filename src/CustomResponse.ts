@@ -1,6 +1,18 @@
 import {Application, Request, Response } from 'express';
 
 export default class CustomResponse{
+    static unauthResponse(res: Response) {
+        res.status(401).json({
+            STATUS: 'FAILURE',
+            MESSAGE : "bad authentication"
+        });        
+    }
+    static forbiddenResponse(res: Response) {
+        res.status(403).json({
+            STATUS: 'FAILURE',
+            MESSAGE : "not authorized"
+        });
+    }
     static successResponse(message : string, DATA : any, res : Response){
         res.status(200).json({
             STATUS: 'SUCCESS',
