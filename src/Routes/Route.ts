@@ -1,7 +1,7 @@
 import { Application } from "express";
-import IController from "../controllers/IController";
+import Controller from "../controllers/Controller";
 
-export default abstract class Route<T extends IController>{
+export default abstract class Route<T extends Controller<any>>{
     path : string;
     controller : T;
 

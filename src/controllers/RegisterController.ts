@@ -6,9 +6,8 @@ import ICreatedRegister from '../models/ICreatedRegister';
 import IRegister from '../models/IRegister';
 import RegisterService from '../services/RegisterService';
 import Controller from "./Controller";
-import IController from "./IController";
 
-export default class RegisterController extends Controller<RegisterService> implements IController{
+export default class RegisterController extends Controller<RegisterService>{
 
     constructor(){
         let service = new RegisterService();

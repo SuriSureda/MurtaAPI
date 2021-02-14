@@ -6,9 +6,8 @@ import ICreatedUser from '../models/ICreatedUser';
 import IUser from '../models/IUser';
 import UserService from '../services/UserService';
 import Controller from "./Controller";
-import IController from "./IController";
 
-export default class UserController extends Controller<UserService> implements IController{
+export default class UserController extends Controller<UserService>{
 
     constructor(){
         let service = new UserService();
