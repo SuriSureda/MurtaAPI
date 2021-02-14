@@ -1,7 +1,6 @@
 import IService from "./IService";
 import User from '../models/schemas/UserSchema';
 import IUser from "../models/IUser";
-import EmailValidator from "../validator/EmailValidator";
 
 export default class UserService implements IService{
 
