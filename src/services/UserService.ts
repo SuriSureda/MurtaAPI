@@ -1,6 +1,7 @@
 import IService from "./IService";
 import User from '../models/schemas/UserSchema';
 import IUser from "../models/IUser";
+import EmailValidator from "../validator/EmailValidator";
 
 export default class UserService implements IService{
 
@@ -11,6 +12,10 @@ export default class UserService implements IService{
 
     get(id: string, callback: any) {
         User.findById(id, {deleted : false},callback);
+    }
+
+    getSignIn(email : string, callback : any){
+        User.findOne({ email : email, deleted : false}, callback).select("+password");
     }
 
     // gets users with password
