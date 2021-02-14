@@ -6,7 +6,7 @@ import IUser from "../models/IUser";
 import UserService from "../services/UserService";
 import Controller from "./Controller";
 
-export default class AuthController extends Controller<UserService>{
+export default class LogInController extends Controller<UserService>{
 
     constructor(){
         let userService = new UserService();
@@ -16,15 +16,19 @@ export default class AuthController extends Controller<UserService>{
     create(req : Request, res : Response) : void{
         throw new Error("not implemented");
     };
+
     get(req : Request, res : Response) : void {
         throw new Error("not implemented");
     };
+
     update(req : Request, res : Response) : void {
         throw new Error("not implemented");
     };
+
     delete(req : Request, res : Response) : void {
         throw new Error("not implemented");
     };
+
     remove(req : Request, res : Response) : void {
         throw new Error("not implemented");
     };
