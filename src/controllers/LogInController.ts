@@ -44,6 +44,7 @@ export default class LogInController extends Controller<UserService>{
 
                         //NOT SECURE PASSWORD ON PAYLOAD
                         let payload : IAuthUser = {
+                            _id : user_data._id,
                             user_name : user_data.user_name,
                             email : user_data.email
                         }
