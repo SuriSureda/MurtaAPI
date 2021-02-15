@@ -2,6 +2,7 @@ import {Application, Request, Response } from 'express';
 import { isValidObjectId } from 'mongoose';
 import Auth from '../Auth';
 import CustomResponse from '../CustomResponse'
+import IAuthUser from '../models/IAuthUser';
 import ICreatedUser from '../models/ICreatedUser';
 import IUser from '../models/IUser';
 import UserService from '../services/UserService';
@@ -68,30 +69,37 @@ export default class UserController extends Controller<UserService>{
 
     update(req: Request, res: Response): void {
         if(this.isUpdateUserBody(req)){
-            this.service.getWPassword(req.body._id,(err : any, user_data : IUser) => {
-                if(err){
-                    CustomResponse.mongoError(err, res);
-                }else if(user_data){
-                    let body = req.body;
-                    let user_to_update : IUser = {
-                        _id : body._id,
-                        user_name : body.user_name ? body.user_name : user_data.user_name,
-                        email : body.email ? body.email : user_data.email,
-                        password : body.password ? Auth.hashPassword(body.password) : user_data.password
-                    }
-                    this.service.update(user_to_update, (err : any, user_updated: IUser) => {
-                        if(err){
-                            CustomResponse.mongoError(err,res)
-                        }else{
-                            //to not wait for response update user and avoid password return 
-                            delete user_to_update.password;
-                            CustomResponse.successResponse('user updated',user_to_update,res);
+            // only same user can update
+            let payload : IAuthUser = Auth.decodeJWT(req.headers.authorization);
+            let body = req.body;
+            if(payload._id === body._id){
+                this.service.getWPassword(req.body._id,(err : any, user_data : IUser) => {
+                    if(err){
+                        CustomResponse.mongoError(err, res);
+                    }else if(user_data){
+                        
+                        let user_to_update : IUser = {
+                            _id : body._id,
+                            user_name : body.user_name ? body.user_name : user_data.user_name,
+                            email : body.email ? body.email : user_data.email,
+                            password : body.password ? Auth.hashPassword(body.password) : user_data.password
                         }
-                    })
-                }else{
-                    CustomResponse.failureResponse('could not updated user : invalid user',null, res);
-                }
-            })
+                        this.service.update(user_to_update, (err : any, user_updated: IUser) => {
+                            if(err){
+                                CustomResponse.mongoError(err,res)
+                            }else{
+                                //to not wait for response update user and avoid password return 
+                                delete user_to_update.password;
+                                CustomResponse.successResponse('user updated',user_to_update,res);
+                            }
+                        })
+                    }else{
+                        CustomResponse.failureResponse('could not updated user : invalid user',null, res);
+                    }
+                })
+            }else{
+                CustomResponse.forbiddenResponse(res);
+            }
         }else{
             CustomResponse.badRequest("Insufficient parameters",res);
         }
