@@ -18,12 +18,8 @@
     "typescript": "^4.1.2"
   },
   "scripts": {
-    "start": "node dist/server.js",
-    "build": "tsc",
-    "postinstall": "npm run build",
-    "tsc": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
-    "prod": "tsc && nodemon ./dist/server.js"
+    "start": "ts-node src/config/server.ts",
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\""
   },
   "author": "",
   "license": "ISC",
