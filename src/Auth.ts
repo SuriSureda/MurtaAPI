@@ -1,5 +1,5 @@
 import IAuthUser from './models/IAuthUser';
-import {sign, verify} from 'jsonwebtoken';
+import {decode, sign, verify} from 'jsonwebtoken';
 import {compareSync, hashSync} from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import CustomResponse from './CustomResponse';
@@ -18,6 +18,10 @@ export default class Auth{
 
     static getJWT(payload : IAuthUser, callback : any){
         sign(payload, process.env.JWT_SECRET_KEY, {expiresIn : "1d"}, callback);
+    }
+
+    static decodeJWT(token : string) : IAuthUser{
+        return  decode(token) as IAuthUser;
     }
 
 
