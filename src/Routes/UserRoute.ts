@@ -1,6 +1,7 @@
 import UserController from '../controllers/UserController'
 import {Application, Request, Response } from 'express';
 import Route from './Route'
+import Auth from '../Auth';
 
 export default class UserRoute extends Route<UserController>{
 
@@ -23,7 +24,7 @@ export default class UserRoute extends Route<UserController>{
             this.controller.getAll(req, res);
         })
 
-        app.put(this.path,(req : Request, res : Response) => {
+        app.put(this.path, Auth.verifyJWT ,(req : Request, res : Response) => {
             this.controller.update(req,res);
         })
 
