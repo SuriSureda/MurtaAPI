@@ -11,23 +11,21 @@ export default class RegisterRoute extends Route<RegisterController>{
     }
 
     route(app : Application){
-
-        app.use(Auth.verifyJWT);
         
-        app.post(this.path, (req : Request, res : Response) => {
+        app.post(this.path, Auth.verifyJWT,(req : Request, res : Response) => {
             this.controller.create(req,res);
         });
 
         //range on query
-        app.get(this.path+"/range", (req : Request, res : Response) => {
+        app.get(this.path+"/range",  Auth.verifyJWT,(req : Request, res : Response) => {
             this.controller.getRange(req, res);
         })
 
-        app.get(this.path+"/:user_id", (req : Request, res : Response) => {
+        app.get(this.path+"/:user_id",  Auth.verifyJWT,(req : Request, res : Response) => {
             this.controller.get(req,res);
         });
 
-        app.get(this.path, (req : Request, res : Response) => {
+        app.get(this.path,  Auth.verifyJWT,(req : Request, res : Response) => {
             this.controller.getAll(req, res);
         })
 
